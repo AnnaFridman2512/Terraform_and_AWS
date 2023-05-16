@@ -1,0 +1,1 @@
+Build your own development environment that allows you to automatically connect Visual Studio Code running on your Windows, Mac, or Linux machine to an EC2 instance running Ubuntu in AWS! This will allow you to easily configure a proper dev or devOps environment quickly through infrastructure automation using Terraform.
