@@ -54,13 +54,15 @@ resource "aws_security_group" "mtc_sg" {
   description = "dev security group"
   vpc_id = aws_vpc.mtc_vpc.id
 
-
+# incoming network traffic
   ingress {
     from_port = 0
     to_port = 0
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  #outgoing network traffic
 
   egress {
 
@@ -70,4 +72,9 @@ resource "aws_security_group" "mtc_sg" {
     cidr_blocks = ["0.0.0.0/0"]
 
   }
+}
+
+resource "aws_key_pair" "mtc_auth" {
+  key_name = "mtckey"
+  public_key = file("~/.ssh/mtckey.pub") #created with ssh-keygen -t ed25519
 }
