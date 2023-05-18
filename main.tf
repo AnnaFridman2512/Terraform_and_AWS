@@ -104,13 +104,13 @@ resource "aws_instance" "dev_node" {
   #The local-exec provisioner in Terraform allows you to run any command on your own computer,
   #separate from the resources that Terraform is managing. 
   #It's like having a way to execute commands on your local machine
-  #as part of your Terr~/.ssh/mtckeyaform configuration.
+  #as part of your Terraform ~/.ssh/mtckeyaform configuration.
   #This provisioner is useful when you need to execute tasks that are not directly related 
   #to creating or managing infrastructure resources, 
   #but are necessary for your deployment or setup process
 
     provisioner "local-exec" {
-      command = templatefile("linux-ssh-config.tpl", {
+      command = templatefile("${var.host_os}-ssh-config.tpl", { #when terraform destroy, plan apply - the person running it will be promted to enter operating system (linux/windows...)
       hostname = self.public_ip,
       user = "ec2-user",
       identityfile = "~/.ssh/mtckey"
