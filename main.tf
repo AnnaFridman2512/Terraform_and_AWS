@@ -85,6 +85,7 @@ resource "aws_instance" "dev_node" {
   tags = {
     name = "dev-node"
   }
+
   key_name               = aws_key_pair.mtc_auth.id
   vpc_security_group_ids = [aws_security_group.mtc_sg.id]
   subnet_id              = aws_subnet.mtc_public_subnet.id
@@ -98,5 +99,22 @@ resource "aws_instance" "dev_node" {
     aws_subnet.mtc_public_subnet,
     aws_security_group.mtc_sg
   ]
-}
 
+
+  #The local-exec provisioner in Terraform allows you to run any command on your own computer,
+  #separate from the resources that Terraform is managing. 
+  #It's like having a way to execute commands on your local machine
+  #as part of your Terr~/.ssh/mtckeyaform configuration.
+  #This provisioner is useful when you need to execute tasks that are not directly related 
+  #to creating or managing infrastructure resources, 
+  #but are necessary for your deployment or setup process
+
+    provisioner "local-exec" {
+      command = templatefile("linux-ssh-config.tpl", {
+      hostname = self.public_ip,
+      user = "ec2-user",
+      identityfile = "~/.ssh/mtckey"
+    }) 
+
+  }
+}
